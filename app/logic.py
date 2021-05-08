@@ -53,6 +53,11 @@ async def delete_post(account_id, account_role, post_id):
 
 
 async def add_comment(account_id, post_id, text):
+    query = select(posts).where(posts.c.id == post_id)
+    post = await _database.fetch_one(query)
+    if not post:
+        HTTPabort(404, 'Post not found')
+
     query = comments.insert().values(account_id=account_id, post_id=post_id,
                                      text=text, created=datetime.utcnow())
     return await _database.execute(query)
