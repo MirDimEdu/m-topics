@@ -50,7 +50,7 @@ async def delete_post(account_id, account_role, post_id):
     await _database.execute(query)
 
 
-
+@_database.transaction()
 async def add_comment(account_id, post_id, text):
     query = select(posts).where(posts.c.id == post_id)
     post = await _database.fetch_one(query)
@@ -62,6 +62,7 @@ async def add_comment(account_id, post_id, text):
     return await _database.execute(query)
 
 
+@_database.transaction()
 async def get_post_comments(post_id, offset, limit):
     query = select(posts).where(posts.c.id == post_id)
     post = await _database.fetch_one(query)
@@ -79,6 +80,7 @@ async def get_post_comments(post_id, offset, limit):
     return await _database.fetch_all(query)
 
 
+@_database.transaction()
 async def delete_comment(account_id, account_role, comment_id):
     query = select(comments).where(comments.c.id == comment_id)
     comment = await _database.fetch_one(query)
