@@ -21,8 +21,7 @@ async def get_all_posts(offset, limit):
     if offset and limit:
         if offset < 0 or limit < 1:
             HTTPabort(422, 'Offset or limit has wrong values')
-        else:
-            query = query.limit(limit).offset(offset)
+        query = query.limit(limit).offset(offset)
 
     return await _database.fetch_all(query)
 
